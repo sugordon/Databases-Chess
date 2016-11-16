@@ -1,0 +1,14 @@
+RUNNING_PID
+*.rdb
+*.db
+.*
+*.pid
+env.conf
+*.zip*
+dist/
+!test/env.conf
+bower_components/
+!.gitignore
+node_modules/
+public/css/
+public/js/
