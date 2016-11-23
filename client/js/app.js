@@ -1,11 +1,14 @@
 'use strict';
-
-
-// Declare app level module which depends on filters, and services
-angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives','ngRoute']).
-  config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-    $routeProvider.when('/view1', {templateUrl: 'partial/1', controller: MyCtrl1});
-    $routeProvider.when('/view2', {templateUrl: 'partial/2', controller: MyCtrl2});
-    $routeProvider.otherwise({redirectTo: '/view1'});
-    $locationProvider.html5Mode(true);
-  }]);
+$( "#box1" )
+  .keyup(function() {
+    var value = $( this ).val();
+    console.log("box1" + value);
+  })
+  .keyup();
+  
+ $( "#box2" )
+  .keyup(function() {
+    var value2 = $( this ).val();
+    console.log("box2 " + value2);
+  })
+  .keyup();
