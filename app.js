@@ -3,13 +3,14 @@
  * Module dependencies
  */
 
-var express = require('express'),
-  routes = require('./routes'),
-  api = require('./routes/api'),
-  http = require('http'),
-  compress = require('compression'),
-  path = require('path');
-
+var express = require('express');
+var routes = require('./routes');
+var api = require('./routes/api');
+var http = require('http');
+var compress = require('compression');
+var path = require('path');
+var logger = require('morgan')
+var bodyParser = require('body-parser');
 
 var app = module.exports = express();
 
@@ -24,23 +25,10 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
+app.use(logger('dev'));
+
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client')));
-app.use(app.router);
-
-// development only
-if (app.get('env') === 'development') {
-   app.use(express.errorHandler());
-};
-
-// production only
-if (app.get('env') === 'production') {
-  // TODO
-}; 
-
-
 
 // Routes
 app.get('/', routes.index);
