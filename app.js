@@ -30,15 +30,18 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client')));
 
+app.use('/components', express.static('bower_components'));
+
+
 // Routes
 app.get('/', routes.index);
-app.get('/partial/:name', routes.partial);
 
 // JSON API
-app.get('/api/name', api.name);
+app.get('/api/ping', api.ping);
+app.get('/api/search/', api.search);
 
 // redirect all others to the index (HTML5 history)
-app.get('*', routes.index);
+app.get('*', routes.notFound);
 
 /**
 * Start Server

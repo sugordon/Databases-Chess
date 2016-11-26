@@ -1,0 +1,20 @@
+{
+  "name": "Chess",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Gordon Su <gordonsu14@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/sugordon/Databases-Chess",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
