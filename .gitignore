@@ -1,7 +1,7 @@
 RUNNING_PID
 *.rdb
 *.db
-.*
+*.log
 *.pid
 env.conf
 *.zip*

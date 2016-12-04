@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <title>webpack-project</title>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u' crossorigin='anonymous'>
+  </head>
+  <body>
+    <div id='app'>
+      <div role='navigation' class='navbar navbar-default navbar-fixed-top'>
+        <div class='navbar-header'>
+          <button type='button' data-toggle='collapse' data-target='.navbar-ex1-collapse' class='navbar-toggle'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></button><a href='#' class='navbar-brand'>Chess Viewer</a>
+        </div>
+        <div class='collapse navbar-collapse navbar-ex1-collapse'>
+          <ul class='nav navbar-nav'>
+            <li><a href='#/board'>Board View</a></li>
+          </ul>
+        </div>
+      </div>
+      <router-view></router-view>
+    </div>
+    <script src='build.js'></script>
+  </body>
+</html>

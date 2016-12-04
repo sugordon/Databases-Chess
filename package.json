@@ -1,23 +1,54 @@
 {
-  "name": "application-name",
-  "version": "0.0.1",
+  "name": "chess-app",
+  "description": "Databases Project",
+  "author": "Gordon Su <gordonsu14@gmail.com>",
   "private": true,
+  "scripts": {
+    "dev-server": "cross-env NODE_ENV=development webpack-dev-server --open --hot --content-base http://localhost:3000",
+    "watch": "cross-env NODE_ENV=development webpack --progress --watch",
+    "start": "node app.js",
+    "nodemon": "nodemon app.js --watch app.js --watch server",
+    "dev": "npm-run-all --parallel nodemon watch",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+  },
   "dependencies": {
     "body-parser": "^1.15.2",
+    "bootstrap": "^3.3.7",
     "compression": "^1.6.2",
     "ejs": "^2.5.2",
     "errorhandler": "^1.5.0",
     "express": "^4.14.0",
+    "jquery-slim": "^3.0.0",
     "method-override": "^2.3.7",
     "morgan": "^1.7.0",
-    "mysql": "^2.12.0"
+    "mysql": "^2.12.0",
+    "vue": "^2.0.1",
+    "vue-resource": "^1.0.3",
+    "vue-router": "^2.1.1"
   },
   "devDependencies": {
-    "del": "^2.2.2",
-    "gulp": "^3.9.1",
-    "gulp-clean-css": "^2.0.13",
-    "gulp-less": "^3.1.0",
-    "gulp-nodemon": "^2.2.1",
-    "gulp-uglify": "^2.0.0"
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-preset-es2015": "^6.0.0",
+    "cross-env": "^3.0.0",
+    "css-loader": "^0.25.0",
+    "file-loader": "^0.9.0",
+    "nodemon": "^1.11.0",
+    "npm-run-all": "^3.1.2",
+    "vue-loader": "^10.0.0",
+    "vue-template-compiler": "^2.1.0",
+    "webpack": "^2.1.0-beta.25",
+    "webpack-dev-server": "^2.1.0-beta.0",
+    "webpack-hot-middleware": "^2.13.2"
+  },
+  "babel": {
+    "presets": [
+      [
+        "es2015",
+        {
+          "modules": false
+        }
+      ]
+    ]
   }
 }
