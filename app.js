@@ -30,6 +30,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
+app.use('/components', express.static('node_modules'));
+
+
 // Routes
 app.get('/', routes.index);
 

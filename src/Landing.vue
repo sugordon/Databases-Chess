@@ -1,6 +1,5 @@
 <template>
 <div class='container'>
-  <div>
     <div class='jumbotron'>
       <h1>Search</h1>
         <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder=''>
@@ -14,13 +13,15 @@ export default {
   name: 'app',
   data () {
     return {
-      input: '',
-      search: function() {
-        console.log(this.input);
-        this.$http.get('/api/search/', { params: {value:this.input}}).then(function(res) {
-          console.log(res.body);
-        });
-      }
+      input: ''
+    }
+  },
+  methods: {
+    search() {
+      console.log(this.input);
+      this.$http.get('/api/search/', { params: {value:this.input}}).then(function(res) {
+        console.log(res.body);
+      });
     }
   }
 }
