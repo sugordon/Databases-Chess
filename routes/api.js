@@ -17,7 +17,7 @@ exports.ping = function(req, res) {
 }
 
 exports.search = function(req, res) {
-  connection.query(req.query.value, function(err, data) {
+  connection.query(getQuery(req.query.value), function(err, data) {
     if (err) {
       res.json({
         data: 'ERROR'
@@ -29,4 +29,8 @@ exports.search = function(req, res) {
       });
     }
   });
+}
+
+function getQuery(string) {
+  return "SELECT * FROM Players WHERE Name LIKE '%" + string + "%'"
 }
