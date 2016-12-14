@@ -4,24 +4,79 @@
       <h1>Search</h1>
         <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder=''>
     </div>
+    <div v-if='data' class='row'>
+      <div class='col-lg-12'>
+        <table class="table">
+          <thead>
+            <tr>
+              <th v-on:click='sort("Name")'>Name</th>
+              <th v-on:click='sort("ELO")'>Games</th>
+              <th v-on:click='sort("Nationality")'>Nationality</th>
+              <th v-on:click='sort("Sex")'>Sex</th>
+              <th v-on:click='sort("ELO")'>ELO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="row in data">
+              <td>{{row.Name}}</td>
+              <td>0</td>
+              <td>{{row.Nationality}}</td>
+              <td>{{row.Sex}}</td>
+              <td>{{row.ELO}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
   </div>
 </div>
 </template>
 
 <script>
-export default {
-  name: 'app',
+export default { name: 'app',
   data () {
     return {
-      input: ''
+      input: '',
+      data: false,
+      sorted: '',
+      reversed: 1
     }
   },
   methods: {
     search() {
       console.log(this.input);
       this.$http.get('/api/search/', { params: {value:this.input}}).then(function(res) {
-        console.log(res.body);
+        this.data = res.body.data;
+        console.log(this.data[0].Name.length);
       });
+    },
+    sort(type) {
+      if (this.sorted === type) {
+        this.reversed*=-1;
+      } else {
+        this.sorted = type;
+        this.reversed = 1;
+      }
+      if (this.reversed === 1) {
+        this.data.sort(function(a, b) {
+          if (a[type] > b[type]) {
+            return 1;
+          } else if (a[type] < b[type]){
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+      } else {
+        this.data.sort(function(a, b) {
+          if (a[type] > b[type]) {
+            return -1;
+          } else if (a[type] < b[type]){
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+      }
     }
   }
 }
@@ -53,5 +108,8 @@ li {
 
 a {
   color: #42b983;
+}
+td {
+  text-align: left;
 }
 </style>
