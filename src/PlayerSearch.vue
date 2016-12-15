@@ -18,7 +18,7 @@
           </thead>
           <tbody>
             <tr v-for="row in data">
-              <td>{{row.Name}}</td>
+              <td><a v-bind:href='"#/player/"+row.pid'>{{row.Name}}</a></td>
               <td>0</td>
               <td>{{row.Nationality}}</td>
               <td>{{row.Sex}}</td>
@@ -43,10 +43,9 @@ export default { name: 'app',
   },
   methods: {
     search() {
-      console.log(this.input);
       this.$http.get('/api/search/', { params: {value:this.input}}).then(function(res) {
         this.data = res.body.data;
-        console.log(this.data[0].Name.length);
+        console.log(this.data[0]);
       });
     },
     sort(type) {
