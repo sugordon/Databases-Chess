@@ -38,7 +38,8 @@ app.get('/', routes.index);
 
 // JSON API
 app.get('/api/ping', api.ping);
-app.get('/api/search/', api.search);
+app.get('/api/playersearch/', api.playersearch);
+app.get('/api/gamesearch/', api.gamesearch);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.notFound);

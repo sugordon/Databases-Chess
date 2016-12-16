@@ -16,7 +16,7 @@ exports.ping = function(req, res) {
   });
 }
 
-exports.search = function(req, res) {
+exports.playersearch = function(req, res) {
   connection.query(getQuery(req.query.value), function(err, data) {
     if (err) {
       res.json({
