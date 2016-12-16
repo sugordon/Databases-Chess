@@ -1,28 +1,30 @@
 <template>
 <div class='container'>
     <div class='jumbotron'>
-      <h1>Player Search</h1>
-        <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder=''>
+      <h1>Games Search</h1>
+        <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder='Player1'>
+        <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder='Player2'>
+        <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder='Event'>
     </div>
     <div v-if='data' class='row'>
       <div class='col-lg-12'>
         <table class='table'>
           <thead>
             <tr>
-              <th v-on:click='sort("name")'>Name</th>
-              <th v-on:click='sort("elo")'>Games</th>
-              <th v-on:click='sort("nationality")'>Nationality</th>
-              <th v-on:click='sort("sex")'>Sex</th>
-              <th v-on:click='sort("elo")'>ELO</th>
+              <th v-on:click='sort("Name")'>Name</th>
+              <th v-on:click='sort("ELO")'>Games</th>
+              <th v-on:click='sort("Nationality")'>Nationality</th>
+              <th v-on:click='sort("Sex")'>Sex</th>
+              <th v-on:click='sort("ELO")'>ELO</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="row in data">
-              <td><a v-bind:href='"#/player/"+row.pid'>{{row.name}}</a></td>
+              <td><a v-bind:href='"#/player/"+row.pid'>{{row.Name}}</a></td>
               <td>0</td>
-              <td>{{row.nationality}}</td>
-              <td>{{row.sex}}</td>
-              <td>{{row.elo}}</td>
+              <td>{{row.Nationality}}</td>
+              <td>{{row.Sex}}</td>
+              <td>{{row.ELO}}</td>
             </tr>
           </tbody>
         </table>
@@ -43,10 +45,7 @@ export default { name: 'app',
   },
   methods: {
     search() {
-      this.$http.get('/api/search/', { params: {value:this.input}}).then(function(res) {
-        this.data = res.body.data;
-        console.log(this.data);
-      });
+        console.log(this.input);
     },
     sort(type) {
       if (this.sorted === type) {

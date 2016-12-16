@@ -32,5 +32,5 @@ exports.search = function(req, res) {
 }
 
 function getQuery(string) {
-  return "SELECT * FROM Players WHERE Name LIKE '%" + string + "%'"
+  return "SELECT * FROM players WHERE Name LIKE '%" + string + "%' LIMIT 100"
 }
