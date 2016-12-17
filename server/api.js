@@ -23,7 +23,7 @@ exports.ping = function(req, res) {
 //All tttribute values are to be given to me as strings, I will worry about the conversion
 
 /*
-var player = {	  //THIS QUERIES THE PLAYER TABLE
+var player = {	  //THIS QUERIES THE PLAYER TABLE, RETURNS MATCHING PLAYER TUPLES IN JSON FORMAT
     "type"    :   "1",
 	"name"	  :   "Sophie",
 	"birth_year_lower" : "1964",
@@ -34,7 +34,7 @@ var player = {	  //THIS QUERIES THE PLAYER TABLE
 	"sex" : "F"
 };
 
-var game = {   //THIS QUERIES THE GAMES TABLE
+var game = {   //THIS QUERIES THE GAMES TABLE, RETURNS MATCHING GAMES TUPLES (ONLY GAME INFO, NOT GAME MOVES) IN JSON FORMAT
 	"type" : "2",
 	"event" : "World Cup",
 	"player1" : "Boris",
@@ -45,7 +45,7 @@ var game = {   //THIS QUERIES THE GAMES TABLE
 	"position" : "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1",
 };
 
-var opening = { //THIS QUERIES THE OPENINGS TABLE
+var opening = { //THIS QUERIES THE OPENINGS TABLE, RETURNS OPENINGS TUPLES (ONLY OPENING INFO, NOT OPENING MOVES) IN JSON FORMAT
 	"type" : "3",
 	"eco" : "A40",
 	"name_white" : "Queen's pawn",
@@ -53,12 +53,12 @@ var opening = { //THIS QUERIES THE OPENINGS TABLE
 	"position" : "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1",
 }; 
 
-var games_moves = { //THIS QUERIES A PARTICULAR GAME FOR ALL ITS MOVES
+var games_moves = { //THIS QUERIES A PARTICULAR GAME FOR ALL ITS MOVES AND RETURNS ALL THE MOVES AND FEN STRINGS FOR THAT GAME
 	"type" : "4",
 	"game_id" : "1"
 };
 
-var openings_moves = { //THIS QUERIES A PARTICULAR OPENING FOR ALL ITS MOVES
+var openings_moves = { //THIS QUERIES A PARTICULAR OPENING FOR ALL ITS MOVES AND RETURNS ALL THE MOVES AND FEN STRINGS
 	"type" : "5",
 	"eco" : "B17"
 }; */
