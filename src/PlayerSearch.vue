@@ -3,6 +3,8 @@
     <div class='jumbotron'>
       <h1>Player Search</h1>
         <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder=''>
+        <!--<h3 v-if='eloSlider'>ELO Range: {{eloSlider.}}</h3>-->
+        <div id='elo-slider'></div>
     </div>
     <div v-if='data' class='row'>
       <div class='col-lg-12'>
@@ -32,14 +34,36 @@
 </template>
 
 <script>
+var noUiSlider = require('nouislider');
+
 export default { name: 'app',
   data () {
     return {
       input: '',
       data: false,
       sorted: '',
-      reversed: 1
+      reversed: 1,
+      eloSlider: null
     }
+  },
+  mounted() {
+    var noUiSlider = require('nouislider');
+
+    var slider = document.getElementById('elo-slider');
+
+    noUiSlider.create(slider, {
+      start: [0, 3000],
+      connect: true,
+      range: {
+        'min': 0,
+        'max': 3000
+      },
+      step: 100
+    });
+    function updateSlider(element, s) {
+      s = element.noUiSlider.get();
+    }
+    slider.noUiSlider.on('update', updateSlider(slider, this.eloSlider));
   },
   methods: {
     search() {
