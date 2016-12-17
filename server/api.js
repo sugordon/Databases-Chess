@@ -23,7 +23,7 @@ exports.ping = function(req, res) {
 //All tttribute values are to be given to me as strings, I will worry about the conversion
 
 /*
-var player = {	
+var player = {	  //THIS QUERIES THE PLAYER TABLE
     "type"    :   "1",
 	"name"	  :   "Sophie",
 	"birth_year_lower" : "1964",
@@ -34,7 +34,7 @@ var player = {
 	"sex" : "F"
 };
 
-var game = {
+var game = {   //THIS QUERIES THE GAMES TABLE
 	"type" : "2",
 	"event" : "World Cup",
 	"player1" : "Boris",
@@ -45,12 +45,22 @@ var game = {
 	"position" : "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1",
 };
 
-var opening = {
+var opening = { //THIS QUERIES THE OPENINGS TABLE
 	"type" : "3",
 	"eco" : "A40",
 	"name_white" : "Queen's pawn",
 	"name_black" : "",
 	"position" : "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1",
+}; 
+
+var games_moves = { //THIS QUERIES A PARTICULAR GAME FOR ALL ITS MOVES
+	"type" : "4",
+	"game_id" : "1"
+};
+
+var openings_moves = { //THIS QUERIES A PARTICULAR OPENING FOR ALL ITS MOVES
+	"type" : "5",
+	"eco" : "B17"
 }; */
 
 exports.playersearch = function(req, res) {
@@ -245,16 +255,27 @@ function getQuery(object) {
 				conjuncts += ("eco in " + eco);
 			}
 			break;
+		case 4:
+			command = "SELECT distinct G.game_id,G.move_number,M.position,M.move FROM games_moves G, moves M "
+			command += ("where G.move_id = M.move_id AND G.game_id = " + object.game_id + " order by game_id,move_number");
+			break;
+		case 5:
+			command = "SELECT distinct O.eco,O.move_number,M.position,M.move FROM openings_moves O, moves M "
+			command += ("where O.move_id = M.move_id AND O.eco = '" + object.eco + "' order by eco,move_number");
+			break;
 	}
 	if (conjuncts.length != 0){
 		command += (" WHERE " + conjuncts);
 	}
-	command += " LIMIT 100";
+	if (object.type < 4){
+		command += " LIMIT 100";
+	}
 	//console.log(command);
 	return command;
 } 
 
-/*connection.query(getQuery(opening), function(err,rows) {
+/*
+connection.query(getQuery(games_moves), function(err,rows) {
 	if (err){ 
 		console.log(this.sql);
 		console.log("ERROR");
@@ -263,4 +284,4 @@ function getQuery(object) {
 	}
 	console.log(rows);
 	//console.log(rows);
-});*/
+}); */
