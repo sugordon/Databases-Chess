@@ -2,8 +2,9 @@
 <html lang='en'>
   <head>
     <meta charset='utf-8'>
-    <title>webpack-project</title>
+    <title>Chess Viewer</title>
     <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u' crossorigin='anonymous'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/components/chessground/assets/base.css">
     <link rel="stylesheet" type="text/css" href="/components/chessground/assets/desktop.css">
     <link rel="stylesheet" type="text/css" href="/components/chessground/assets/theme.css">
@@ -19,12 +20,16 @@
             <li><a href='#/gamesearch'>Game Search</a></li>
           </ul>
           <ul class='nav navbar-nav'>
-            <li><a href='#/board'>Board View</a></li>
+            <li><a href='#/board/0'>Board Search</a></li>
+          </ul>
+          <ul class='nav navbar-nav'>
+            <li><a href='#/pgn/0'>Viewer</a></li>
           </ul>
         </div>
       </div>
       <router-view></router-view>
     </div>
+    <script src='http://underscorejs.org/underscore-min.js'></script>
     <script src='build.js'></script>
   </body>
 </html>

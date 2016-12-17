@@ -43,7 +43,7 @@ export default { name: 'app',
   },
   methods: {
     search() {
-      this.$http.get('/api/search/', { params: {value:this.input}}).then(function(res) {
+      this.$http.get('/api/playersearch/', { params: {value:this.input}}).then(function(res) {
         this.data = res.body.data;
         console.log(this.data);
       });
