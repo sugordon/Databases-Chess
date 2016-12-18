@@ -64,13 +64,20 @@ var games_moves = { //THIS QUERIES A PARTICULAR GAME FOR ALL ITS MOVES AND RETUR
 var openings_moves = { //THIS QUERIES A PARTICULAR OPENING FOR ALL ITS MOVES AND RETURNS ALL THE MOVES AND FEN STRINGS
 	"type" : "5",
 	"eco" : "B17"
-}; */
+}; 
+
+var pid_search = {
+	"type": "6",
+	"pid" : "2805677"
+}
+
+*/
 
 exports.playersearch = function(req, res) {
   connection.query(getQuery(req.query), function(err, data) {
     if (err) {
       res.json({
-        data: 'ERROR'
+        data: 'ERR'
       });
       return;
     } else {
@@ -184,18 +191,18 @@ function getQuery(object) {
 				if (player2 != ""){
 					first = "(SELECT P3.pid FROM players P3 where P3.name LIKE '%" + player1 + "%')";
 					second = "(SELECT P4.pid FROM players P4 where P4.name LIKE '%" + player2 + "%')";
-					conjuncts += ("((G.white_player in " + first + "AND G.black_player in " + second + ") OR ");
-					conjuncts += ("(G.white_player in " + second + "AND G.black_player in " + first + "))");
+					conjuncts += ("((G.white_player in " + first + " AND G.black_player in " + second + ") OR ");
+					conjuncts += ("(G.white_player in " + second + " AND G.black_player in " + first + "))");
 				}else{
 					first = "(SELECT P3.pid FROM players P3 where P3.name LIKE '%" + player1 + "%')";
 					second = "(SELECT P4.pid FROM players P4 where P4.name LIKE '%" + player1 + "%')";
-					conjuncts += ("(G.white_player in " + first + "OR G.black_player in " + second + ")");
+					conjuncts += ("(G.white_player in " + first + " OR G.black_player in " + second + ")");
 				}
 			}else if (player2 != ""){
 				conjuncts += " AND ";
 				first = "(SELECT P3.pid FROM players P3 where P3.name LIKE '%" + player2 + "%')";
 				second = "(SELECT P4.pid FROM players P4 where P4.name LIKE '%" + player2 + "%')";
-				conjuncts += ("G.white_player in " + first + "OR G.black_player in " + second + ")");
+				conjuncts += ("G.white_player in " + first + " OR G.black_player in " + second + ")");
 			}
 			//pid1 or pid2 (or both)
 			if (pid1 != ""){
@@ -204,11 +211,11 @@ function getQuery(object) {
 					conjuncts += ("((G.white_player = " + pid1 + " AND G.black_player = " + pid2 + ")");
 					conjuncts += ("OR (G.white_player = " + pid2 + " AND G.black_player = " + pid1 + "))");
 				}else{
-					conjuncts += ("(G.white_player = " + pid2 + "OR G.black_player = " + pid2 + ")");
+					conjuncts += ("(G.white_player = " + pid1 + " OR G.black_player = " + pid1 + ")");
 				}
 			}else if (pid2 != ""){
 				conjuncts += " AND ";
-				conjuncts += ("G.white_player = " + pid + "OR G.black_player in " + second + ")");
+				conjuncts += ("G.white_player = " + pid2 + " OR G.black_player in " + pid2 + ")");
 			}
 			//date
 			if (date_lower != ""){
@@ -288,6 +295,10 @@ function getQuery(object) {
 				command += (" WHERE " + conjuncts);
 			}
 			break;
+		case 6:
+			command = "SELECT * FROM players";
+			pid = object.pid;
+			command += (" WHERE pid = " + pid); 
 	}
 	command += " LIMIT 500";
 	console.log(command);
