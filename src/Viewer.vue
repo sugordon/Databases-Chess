@@ -29,7 +29,7 @@
       <div>
       </div>
       </br>
-      <div v-if='isGame'>
+      <div v-if='isGame && Object.keys(pgnData).length !== 0'>
         <h4><b>Event: {{pgnData.event}}</b></h4>
         <h4><b>ECO: {{pgnData.eco}}</b></h4>
       </div>

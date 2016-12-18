@@ -17,6 +17,7 @@
           <thead>
             <tr>
               <th v-on:click='sort("name")'>Name</th>
+              <th v-on:click='sort("games")'>Games</th>
               <th v-on:click='sort("nationality")'>Nationality</th>
               <th v-on:click='sort("sex")'>Sex</th>
               <th v-on:click='sort("elo")'>ELO</th>
@@ -25,6 +26,7 @@
           <tbody>
             <tr v-for="row in data">
               <td><a v-bind:href='"#/player/"+row.pid'>{{row.name}}</a></td>
+              <td>{{row.games}}</td>
               <td>{{row.nationality}}</td>
               <td>{{row.sex}}</td>
               <td>{{row.elo}}</td>
@@ -47,6 +49,7 @@ export default { name: 'app',
       sorted: '',
       reversed: 1,
       eloSlider: null,
+      hasGames: [],
       eloEle: null
     }
   },
@@ -65,6 +68,15 @@ export default { name: 'app',
       step: 100
     });
     this.eloEle.noUiSlider.on('update', this.updateSlider);
+  },
+  watch: {
+    hasGames: function () {
+      _.each(this.hasGames, function(val) {
+        val[1].then(function(res) {
+          val[0].games = res.body.data.length;
+        });
+      });
+    }
   },
   methods: {
     updateSlider() {
@@ -85,8 +97,28 @@ export default { name: 'app',
           "sex" : ""
         }
       }).then(function(res) {
-        this.data = res.body.data;
+        var data = res.body.data;
+        this.data = data;
+        this.hasGames = _.map(data, this.insertGames);
       });
+    },
+    insertGames(val) {
+      val.games = 0;
+      return [val, this.$http.get('/api/playersearch/', {
+        params: {
+          "type" : "2",
+          "game_id" : "",
+          "event" : "",
+          "player1" : "",
+          "player2" : "",
+          "pid1" : val.pid,
+          "pid2" : "",
+          "date_lower" : "",
+          "date_upper" : "",
+          "eco" : "",
+          "position" : ""
+        }
+      })];
     },
     sort(type) {
       if (this.sorted === type) {
