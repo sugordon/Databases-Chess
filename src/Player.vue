@@ -4,7 +4,7 @@
         <h1>Player Info</h1>
     </div>
     <div class='row'>
-        <div class='col-lg-12'>
+        <div class='col-lg-6'>
             <table class='info-table table'>
                 <tr>
                     <th>Name</th>
@@ -26,6 +26,31 @@
                     <th>Birth Year</th>
                     <td>{{data.Birth_year}}</td>
                 </tr>
+            </table>
+        </div>
+        <div class='col-lg-6'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th v-on:click='sort("game_id")'>Game Id</th>
+                        <th v-on:click='sort("white_player_name")'>White Player</th>
+                        <th v-on:click='sort("black_player_name")'>Black Player</th>
+                        <th v-on:click='sort("result")'>Result</th>
+                        <th v-on:click='sort("event")'>Event</th>
+                        <th v-on:click='sort("date")'>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="row in data">
+                        <td><a v-bind:href='"#/pgn/"+row.game_id'>{{row.game_id}}</a></td>
+                        <td><a v-bind:href='"#/player/"+row.white_player_id'>{{row.white_player_name}}</a></td>
+                        <td><a v-bind:href='"#/player/"+row.black_player_id'>{{row.black_player_name}}</a></td>
+                        <td style='cursor: pointer'>{{row.result}}</td>
+                        <td style='cursor: pointer'>{{row.event}}</td>
+                        <td style='cursor: pointer'>{{row.date}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -46,14 +71,9 @@ export default {name: 'app',
             Birth_year: '1900',
             Sex: 'M'
         };
-        //this.$http.get('/api/player/' + this.$route.params.id).then(function(res) {
+        //this.$http.get('/api/playersearch/' + this.$route.params.id).then(function(res) {
             //this.data = res.body.data;
-            //console.log(this.data);
         //});
-    },
-    methods: {
-        get() {
-        }
     }
 }
 </script>

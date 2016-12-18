@@ -17,7 +17,6 @@
           <thead>
             <tr>
               <th v-on:click='sort("name")'>Name</th>
-              <th v-on:click='sort("elo")'>Games</th>
               <th v-on:click='sort("nationality")'>Nationality</th>
               <th v-on:click='sort("sex")'>Sex</th>
               <th v-on:click='sort("elo")'>ELO</th>
@@ -26,7 +25,6 @@
           <tbody>
             <tr v-for="row in data">
               <td><a v-bind:href='"#/player/"+row.pid'>{{row.name}}</a></td>
-              <td>0</td>
               <td>{{row.nationality}}</td>
               <td>{{row.sex}}</td>
               <td>{{row.elo}}</td>
@@ -58,7 +56,7 @@ export default { name: 'app',
     this.eloEle = document.getElementById('elo-slider');
 
     noUiSlider.create(this.eloEle, {
-      start: [0, 3000],
+      start: [2000, 3000],
       connect: true,
       range: {
         'min': 0,
