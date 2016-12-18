@@ -12,6 +12,12 @@
           <button v-on:click='getById' class="btn btn-default" type="button">Load</button>
         </span>
       </div><!-- /input-group -->
+      <table style='width:100%'>
+        <tr>
+          <th>White {{whitePlayer}}</th>
+          <th>Black {{blackPlayer}}</th>
+        </tr>
+      </table>
       <div id='pgn-box' class='pgn-scrolling'>
         <div v-for='(move, index) in moveArray'>
           <div class="btn-group">
@@ -20,8 +26,10 @@
           </div>
         </div>
       </div>
+      </br>
       <div>
         <input v-model='fen' type='text' class='form-control' placeholder=''>
+        </br>
         <a v-bind:href='"#/board/" + encodedFen' class="btn btn-default">Search this Position</a>
       </div>
       <i v-on:click='beg' class="control-icon fa-2x fa fa-fast-backward"></i>
@@ -73,6 +81,8 @@ export default {
       moveArray: [],
       chess: null,
       ground: 0,
+      whitePlayer: '',
+      blackPlayer: '',
       options: {
         events: {
           change: this.updateFen
@@ -111,6 +121,26 @@ export default {
           }
         }
       } else {
+        console.log('asdf');
+        this.$http.get('/api/playersearch/', {
+          params: {
+            "type" : "2",
+            "game_id" : this.pgn_id,
+            "event" : "",
+            "player1" : "",
+            "player2" : "",
+            "pid1" : "",
+            "pid2" : "",
+            "date_lower" : "",
+            "date_upper" : "",
+            "eco" : "",
+            "position" : ""
+          }
+        }).then(function(res) {
+          var data = res.body.data[0];
+          this.whitePlayer = ": " + data.white_player_name;
+          this.blackPlayer = ": " + data.black_player_name;
+        });
         params = {
           params: {
             "type" : "4",

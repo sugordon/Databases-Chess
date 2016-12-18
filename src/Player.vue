@@ -1,7 +1,7 @@
 <template>
 <div class='container'>
-    <div v-on:click='get' class='jumbotron'>
-        <h1>Player Info</h1>
+    <div class='jumbotron'>
+        <h2>Player Info</h2>
     </div>
     <div class='row'>
         <div class='col-lg-6'>
@@ -28,7 +28,7 @@
                 </tr>
             </table>
         </div>
-        <div class='col-lg-6'>
+        <div v-if='gamedata' class='col-lg-6'>
             <table class='table'>
                 <thead>
                     <tr>
@@ -41,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="row in data">
+                    <tr v-for="row in gamedata">
                         <td><a v-bind:href='"#/pgn/"+row.game_id'>{{row.game_id}}</a></td>
                         <td><a v-bind:href='"#/player/"+row.white_player_id'>{{row.white_player_name}}</a></td>
                         <td><a v-bind:href='"#/player/"+row.black_player_id'>{{row.black_player_name}}</a></td>
@@ -60,7 +60,8 @@
 export default {name: 'app',
     data () {
         return {
-            data: false
+            data: false,
+            gamedata: false
         }
     },
     created () {
@@ -71,9 +72,24 @@ export default {name: 'app',
             Birth_year: '1900',
             Sex: 'M'
         };
-        //this.$http.get('/api/playersearch/' + this.$route.params.id).then(function(res) {
-            //this.data = res.body.data;
-        //});
+        this.$http.get('/api/playersearch/', {
+            params: {
+                "type" : "2",
+                "game_id" : "",
+                "event" : "",
+                "player1" : "",
+                "player2" : "",
+                "pid1" : this.$route.params.id,
+                "pid2" : "",
+                "date_lower" : "",
+                "date_upper" : "",
+                "eco" : "",
+                "position" : ""
+            }
+        }).then(function(res) {
+            console.log(res.body.data);
+            this.gamedata = res.body.data;
+        });
     }
 }
 </script>

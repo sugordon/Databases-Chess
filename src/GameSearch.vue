@@ -25,6 +25,7 @@
               <th v-on:click='sort("game_id")'>Game Id</th>
               <th v-on:click='sort("white_player_name")'>White Player</th>
               <th v-on:click='sort("black_player_name")'>Black Player</th>
+              <th v-on:click='sort("eco")'>ECO</th>
               <th v-on:click='sort("result")'>Result</th>
               <th v-on:click='sort("event")'>Event</th>
               <th v-on:click='sort("date")'>Date</th>
@@ -35,6 +36,7 @@
               <td><a v-bind:href='"#/pgn/"+row.game_id'>{{row.game_id}}</a></td>
               <td><a v-bind:href='"#/player/"+row.white_player_id'>{{row.white_player_name}}</a></td>
               <td><a v-bind:href='"#/player/"+row.black_player_id'>{{row.black_player_name}}</a></td>
+              <td><a v-bind:href='"#/pgn/"+row.eco'>{{row.eco}}</a></td>
               <td style='cursor: pointer'>{{row.result}}</td>
               <td style='cursor: pointer'>{{row.event}}</td>
               <td style='cursor: pointer'>{{row.date}}</td>
@@ -64,9 +66,12 @@ export default { name: 'app',
       this.$http.get('/api/playersearch/', {
         params: {
           "type" : "2",
+          "game_id" : "",
           "event" : this.event,
           "player1" : this.player1,
           "player2" : this.player2,
+          "pid1" : "",
+          "pid2" : "",
           "date_lower" : "",
           "date_upper" : "",
           "eco" : this.eco,

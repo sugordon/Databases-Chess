@@ -63,20 +63,16 @@
         <table class='table'>
           <thead>
             <tr>
-              <th v-on:click='sort(openingdata, "name")'>Name</th>
-              <th v-on:click='sort(openingdata, "elo")'>Games</th>
-              <th v-on:click='sort(openingdata, "nationality")'>Nationality</th>
-              <th v-on:click='sort(openingdata, "sex")'>Sex</th>
-              <th v-on:click='sort(openingdata, "elo")'>ELO</th>
+              <th v-on:click='sort("eco")'>ECO</th>
+              <th v-on:click='sort("name_white")'>White Name</th>
+              <th v-on:click='sort("name_black")'>Black Name</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="row in openingdata">
-              <td><a v-bind:href='"#/player/"+row.pid'>{{row.name}}</a></td>
-              <td>0</td>
-              <td>{{row.nationality}}</td>
-              <td>{{row.sex}}</td>
-              <td>{{row.elo}}</td>
+              <td><a v-bind:href='"#/pgn/"+row.eco'>{{row.eco}}</a></td>
+              <td>{{row.name_white}}</td>
+              <td>{{row.name_black}}</td>
             </tr>
           </tbody>
         </table>
@@ -193,9 +189,12 @@ export default {
       this.$http.get('/api/playersearch/', {
         params: {
           "type" : "2",
+          "game_id" : "",
           "event" : "",
           "player1" : "",
           "player2" : "",
+          "pid1" : "",
+          "pid2" : "",
           "date_lower" : "",
           "date_upper" : "",
           "eco" : "",
