@@ -151,7 +151,7 @@ function getQuery(object) {
 			}
 			break;		
 		case 2: //games table
-			command = "SELECT G.game_id, G.event, G.white_player as white_player_id, G.black_player as black_player_id,P1.name";
+			command = "SELECT distinct G.game_id, G.event, G.white_player as white_player_id, G.black_player as ";			command += "black_player_id,P1.name ";
 			command += (" as white_player_name, P2.name as black_player_name,  G.result, G.date, G.eco, O.name_white as ");
 			command += (" white_opening, O.name_black as black_opening from games G, openings O, players P1, players P2 ");
 			command += (" where P1.pid = G.white_player  and P2.pid = G.black_player and O.eco = G.eco ");
@@ -174,17 +174,17 @@ function getQuery(object) {
 				if (player2 != ""){
 					first = "(SELECT P3.pid FROM players P3 where P3.name LIKE '%" + player1 + "%')";
 					second = "(SELECT P4.pid FROM players P4 where P4.name LIKE '%" + player2 + "%')";
-					conjuncts += ("G.white_player in " + first + "AND G.black_player in " + second);
+					conjuncts += ("(G.white_player in " + first + "AND G.black_player in " + second);
 				}else{
 					first = "(SELECT P3.pid FROM players P3 where P3.name LIKE '%" + player1 + "%')";
 					second = "(SELECT P4.pid FROM players P4 where P4.name LIKE '%" + player1 + "%')";
-					conjuncts += ("G.white_player in " + first + "OR G.black_player in " + second);
+					conjuncts += ("(G.white_player in " + first + "OR G.black_player in " + second + ")");
 				}
 			}else if (player2 != ""){
 				conjuncts += " AND ";
 				first = "(SELECT P3.pid FROM players P3 where P3.name LIKE '%" + player2 + "%')";
 				second = "(SELECT P4.pid FROM players P4 where P4.name LIKE '%" + player2 + "%')";
-				conjuncts += ("G.white_player in " + first + "OR G.black_player in " + second);
+				conjuncts += ("G.white_player in " + first + "OR G.black_player in " + second + ")");
 			}
 			//date
 			if (date_lower != ""){
