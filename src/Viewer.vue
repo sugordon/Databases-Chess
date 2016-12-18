@@ -5,7 +5,13 @@
       <div id='viewer-board' class="wood chessground vuejs cburnett"></div>
     </div>
     <div class='col-lg-6'>
-      <!--<textarea v-model='pgn' rows="15" cols="50" placeholder='Paste PGN'></textarea>-->
+      <h4 v-if='moveArray.length===0'>No game loaded: enter ECO code or Game Id</h4>
+      <div v-if='moveArray.length===0' class="input-group">
+        <input v-on:keyup.enter='getById' v-model='pgn_id' type='text' class='form-control' placeholder=''>
+        <span class="input-group-btn">
+          <button v-on:click='getById' class="btn btn-default" type="button">Load</button>
+        </span>
+      </div><!-- /input-group -->
       <div id='pgn-box' class='pgn-scrolling'>
         <div v-for='(move, index) in moveArray'>
           <div class="btn-group">
@@ -23,6 +29,7 @@
       <i v-on:click='play' v-bind:class="{ 'control-icon fa-2x fa fa-play' : !isPlaying, 'control-icon fa-2x fa fa-pause' : isPlaying }"></i>
       <i v-on:click='next' class="control-icon fa-2x fa fa-step-forward"></i>
       <i v-on:click='end' class="control-icon fa-2x fa fa-fast-forward"></i>
+      <i v-on:click='ground.toggleOrientation()' class="control-icon fa-2x fa fa-repeat"></i>
     </div>
   </div>
 </div>
@@ -80,25 +87,7 @@ export default {
     }
   },
   created() {
-    this.chess = new Chess();
-    //this.pgn = '1. e4 Nf6 2. e5 Ne4 3. d3 Nc5 4. d4 Ne4 5. Qd3 d5 6. exd6 Nxd6 7. Nf3 b5 8. Bf4 e5 9. Bxe5 Bf5 10. Qb3 Nc6 11. Bxb5 Qd7 12. O-O Ne4 13. Nc3 a6 14. Ba4 Be6 15. d5 Bf5 16. Bxc6 Qxc6 17. dxc6 Bc5 18. Bxg7 Rg8 19. Ne5 Rxg7 20. Nxe4 Bxe4 21. g3 f5 22. Rad1 Bf3 23. Rd7 Rd8 24. Rxg7 Rd4 25. Qf7+ Kd8 26. Qg8+ Bf8 27. Qxf8#'
-    var params = {};
-    if (this.pgn_id.match(/[A-Z]/)) {
-      params = {
-        params: {
-          "type" : "5",
-          "eco" : this.pgn_id
-        }
-      }
-    } else {
-      params = {
-        params: {
-          "type" : "4",
-          "game_id" : this.pgn_id
-        }
-      }
-    }
-    this.$http.get('/api/playersearch/', params).then(this.loadResult);
+    this.getById();
   },
   mounted () {
     var element = document.getElementById('viewer-board');
@@ -110,6 +99,26 @@ export default {
   methods: {
     updateFen() {
       this.fen = this.ground.getFen();
+    },
+    getById() {
+      this.chess = new Chess();
+      var params = {};
+      if (this.pgn_id.match(/[A-Z]/)) {
+        params = {
+          params: {
+            "type" : "5",
+            "eco" : this.pgn_id
+          }
+        }
+      } else {
+        params = {
+          params: {
+            "type" : "4",
+            "game_id" : this.pgn_id
+          }
+        }
+      }
+      this.$http.get('/api/playersearch/', params).then(this.loadResult);
     },
     loadResult (res) {
       var data = res.body.data;

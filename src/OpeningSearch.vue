@@ -1,18 +1,13 @@
 <template>
 <div class='container'>
     <div class='jumbotron'>
-      <h1>Games Search</h1>
+      <h1>Opening Search</h1>
       <div class='row'>
-        <div class='col-lg-6'>
-          <input v-on:keyup.enter='search' v-model='player1' type='text' class='form-control' placeholder='Player1'>
-          </br>
-          <input v-on:keyup.enter='search' v-model='player2' type='text' class='form-control' placeholder='Player2'>
-        </div>
-        <div class='col-lg-6'>
-          <input v-on:keyup.enter='search' v-model='event' type='text' class='form-control' placeholder='Event'>
-          </br>
           <input v-on:keyup.enter='search' v-model='eco' type='text' class='form-control' placeholder='ECO'>
-        </div>
+          </br>
+          <input v-on:keyup.enter='search' v-model='wName' type='text' class='form-control' placeholder='White Name'>
+          </br>
+          <input v-on:keyup.enter='search' v-model='bName' type='text' class='form-control' placeholder='Black Name'>
       </div>
       </br>
       <button v-on:click='search' class="btn btn-default" type="submit">Search</button>
@@ -22,22 +17,16 @@
         <table class='table'>
           <thead>
             <tr>
-              <th v-on:click='sort("game_id")'>Game Id</th>
-              <th v-on:click='sort("white_player_name")'>White Player</th>
-              <th v-on:click='sort("black_player_name")'>Black Player</th>
-              <th v-on:click='sort("result")'>Result</th>
-              <th v-on:click='sort("event")'>Event</th>
-              <th v-on:click='sort("date")'>Date</th>
+              <th v-on:click='sort("eco")'>ECO</th>
+              <th v-on:click='sort("name_white")'>White Name</th>
+              <th v-on:click='sort("name_black")'>Black Name</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="row in data">
-              <td><a v-bind:href='"#/pgn/"+row.game_id'>{{row.game_id}}</a></td>
-              <td><a v-bind:href='"#/player/"+row.white_player_id'>{{row.white_player_name}}</a></td>
-              <td><a v-bind:href='"#/player/"+row.black_player_id'>{{row.black_player_name}}</a></td>
-              <td style='cursor: pointer'>{{row.result}}</td>
-              <td style='cursor: pointer'>{{row.event}}</td>
-              <td style='cursor: pointer'>{{row.date}}</td>
+              <td><a v-bind:href='"#/pgn/"+row.eco'>{{row.eco}}</a></td>
+              <td>{{row.name_white}}</td>
+              <td>{{row.name_black}}</td>
             </tr>
           </tbody>
         </table>
@@ -50,10 +39,9 @@
 export default { name: 'app',
   data () {
     return {
-      player1: '',
-      player2: '',
-      event: '',
       eco: '',
+      wName: '',
+      bName: '',
       data: false,
       sorted: '',
       reversed: 1
@@ -63,13 +51,10 @@ export default { name: 'app',
     search() {
       this.$http.get('/api/playersearch/', {
         params: {
-          "type" : "2",
-          "event" : this.event,
-          "player1" : this.player1,
-          "player2" : this.player2,
-          "date_lower" : "",
-          "date_upper" : "",
+          "type" : "3",
           "eco" : this.eco,
+          "name_white" : this.wName,
+          "name_black" : this.bName,
           "position" : "",
         }
       }).then(function(res) {

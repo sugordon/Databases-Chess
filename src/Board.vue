@@ -24,11 +24,14 @@
       <div>
         <button v-on:click='empty()' type="submit" class="btn btn-default">Empty Board</button>
         <button v-on:click='starting()' type="submit" class="btn btn-default">Starting Board</button>
+        <button v-on:click='ground.toggleOrientation()' type="submit" class="btn btn-default">Flip</button>
       </div>
     </div>
+    </br>
     <div class='col-lg-6'>
       <div>
         <input v-model='fen' type='text' class='form-control' placeholder=''>
+        </br>
         <button v-on:click='updateBoard' type="submit" class="btn btn-default">Update</button>
         <button v-on:click='searchOpenings' type="submit" class="btn btn-default">Search Openings</button>
         <button v-on:click='searchGames' type="submit" class="btn btn-default">Search Games</button>

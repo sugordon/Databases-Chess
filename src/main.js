@@ -7,6 +7,7 @@ import VueResource from 'vue-resource';
 
 import PlayerSearch from './PlayerSearch.vue';
 import GameSearch from './GameSearch.vue';
+import OpeningSearch from './OpeningSearch.vue';
 import Player from './Player.vue';
 import Board from './Board.vue';
 import Viewer from './Viewer.vue';
@@ -17,6 +18,7 @@ Vue.use(VueResource);
 const routes = [
   { path: '/', component: PlayerSearch },
   { path: '/gamesearch', component: GameSearch },
+  { path: '/openingsearch', component: OpeningSearch },
   { path: '/player/:id', component: Player },
   { path: '/pgn/:id', component: Viewer },
   { path: '/board/:fen', component: Board } ];

@@ -2,7 +2,12 @@
 <div class='container'>
     <div class='jumbotron'>
       <h1>Player Search</h1>
-        <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder=''>
+        <div class="input-group">
+          <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder=''>
+          <span class="input-group-btn">
+          <button v-on:click='search' class="btn btn-default" type="button">Search</button>
+          </span>
+        </div><!-- /input-group -->
         <h3>ELO Range: {{ eloSlider }}</h3>
         <div id='elo-slider'></div>
     </div>
