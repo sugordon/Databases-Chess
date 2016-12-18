@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <button v-if='isGame && move_number === chess.history().length' type='button' class='btn btn-default'>Winner: {{pgnData.result}}</button>
+      <button v-if='isGame && move_number === chess.history().length' type='button' class='btn btn-default'>Result: {{pgnData.result}}</button>
       </br>
       <div v-if='isGame && Object.keys(pgnData).length !== 0'>
         <h4><b>Event: {{pgnData.event}}</b></h4>
