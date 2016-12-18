@@ -208,7 +208,7 @@ function getQuery(object) {
 			if (position != ""){
 				conjuncts += " AND ";
 				subposition = position.substring(0,position.indexOf(" ")+2);
-				move_id = "(SELECT M.move_id FROM moves M where M.position LIKE '%" + subposition + "%')";
+				move_id = "(SELECT M.move_id FROM moves M where M.position LIKE '%" + position + "%')";
 				game_id = "(SELECT G2.game_id FROM games_moves G2 where G2.move_id in " + move_id + ")";
 				conjuncts += ("G.game_id in " + game_id);
 			}
