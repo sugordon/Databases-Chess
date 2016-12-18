@@ -39,7 +39,7 @@
               <td><a v-bind:href='"#/pgn/"+row.eco'>{{row.eco}}</a></td>
               <td style='cursor: pointer'>{{row.result}}</td>
               <td style='cursor: pointer'>{{row.event}}</td>
-              <td style='cursor: pointer'>{{row.date}}</td>
+              <td style='cursor: pointer'>{{row.date.slice(0,10)}}</td>
             </tr>
           </tbody>
         </table>
