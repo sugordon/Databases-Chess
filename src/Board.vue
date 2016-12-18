@@ -38,20 +38,20 @@
         <table class='table'>
           <thead>
             <tr>
-              <th v-on:click='sort(gamedata, "name")'>Name</th>
-              <th v-on:click='sort(gamedata, "elo")'>Games</th>
-              <th v-on:click='sort(gamedata, "nationality")'>Nationality</th>
-              <th v-on:click='sort(gamedata, "sex")'>Sex</th>
-              <th v-on:click='sort(gamedata, "elo")'>ELO</th>
+              <th v-on:click='sort("white_player_name")'>White Player</th>
+              <th v-on:click='sort("black_player_name")'>Black Player</th>
+              <th v-on:click='sort("result")'>Result</th>
+              <th v-on:click='sort("event")'>Event</th>
+              <th v-on:click='sort("date")'>Date</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="row in gamedata">
-              <td><a v-bind:href='"#/player/"+row.pid'>{{row.name}}</a></td>
-              <td>0</td>
-              <td>{{row.nationality}}</td>
-              <td>{{row.sex}}</td>
-              <td>{{row.elo}}</td>
+              <td><a v-bind:href='"#/player/"+row.white_player_id'>{{row.white_player_name}}</a></td>
+              <td><a v-bind:href='"#/player/"+row.black_player_id'>{{row.black_player_name}}</a></td>
+              <td style='cursor: pointer' v-on:click='loadGame(row.game_id)'>{{row.result}}</td>
+              <td style='cursor: pointer' v-on:click='loadGame(row.game_id)'>{{row.event}}</td>
+              <td style='cursor: pointer' v-on:click='locaGame(row.game_id)'>{{row.date}}</td>
             </tr>
           </tbody>
         </table>
@@ -110,7 +110,6 @@ export default {
     }
   },
   mounted () {
-    console.log('asdf ' + this.$route.params.fen);
     var element = document.getElementById('main-board');
     this.ground = Chessground(element, this.options);
     var Width = element.clientWidth;
@@ -125,6 +124,9 @@ export default {
       }
       this.piece = piece;
       console.log(this.piece);
+    },
+    loadGame(id) {
+      window.location = '#/pgn/' + id;
     },
     sort(data, type) {
       if (this.sorted === type) {
@@ -171,13 +173,34 @@ export default {
       this.fen = this.ground.getFen();
     },
     searchOpenings() {
-      this.$http.get('/api/openfensearch/', { params: {value:this.fen}}).then(function(res) {
+      this.$http.get('/api/playersearch/', {
+        params: {
+          "type" : "3",
+          "eco" : "",
+          "name_white" : "",
+          "name_black" : "",
+          "position" : this.fen,
+        }
+      }).then(function(res) {
         this.openingdata = res.body.data;
+        console.log(this.openingdata);
       });
     },
     searchGames() {
-      this.$http.get('/api/gamefensearch/', { params: {value:this.fen}}).then(function(res) {
+      this.$http.get('/api/playersearch/', {
+        params: {
+          "type" : "2",
+          "event" : "",
+          "player1" : "",
+          "player2" : "",
+          "date_lower" : "",
+          "date_upper" : "",
+          "eco" : "",
+          "position" : this.fen,
+        }
+      }).then(function(res) {
         this.gamedata = res.body.data;
+        console.log(this.gamedata);
       });
     },
     drop(position) {

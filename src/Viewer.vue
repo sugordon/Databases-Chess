@@ -9,8 +9,8 @@
       <div id='pgn-box' class='pgn-scrolling'>
         <div v-for='(move, index) in moveArray'>
           <div class="btn-group">
-            <button v-bind:id='"move-" + (2*index)' type='button' v-on:click='jump(2*index)' v-bind:class="{ 'selected' : move_number === 2*index+1 }" class='btn btn-default'>{{index+1}}. {{move}}</button>
-            <button v-bind:id='"move-" + (2*index+1)' type='button' v-on:click='jump(2*index+1)' v-bind:class="{ 'selected' : move_number === 2*index+2 }" class='btn btn-default'>{{move}}</button>
+            <button v-bind:id='"move-" + (2*index)' type='button' v-on:click='jump(2*index)' v-bind:class="{ 'selected' : move_number === 2*index+1 }" class='btn btn-default'>{{index+1}}. {{move[0]}}</button>
+            <button v-bind:id='"move-" + (2*index+1)' type='button' v-on:click='jump(2*index+1)' v-bind:class="{ 'selected' : move_number === 2*index+2 }" class='btn btn-default'>{{move[1]}}</button>
           </div>
         </div>
       </div>
@@ -113,12 +113,23 @@ export default {
     },
     loadResult (res) {
       var data = res.body.data;
+      console.log(data.length);
       var chess = this.chess;
-      _.each(data, function(val) {
-        chess.move(val.move);
+      _.each(_.pluck(data.sort(function(a, b) {
+        if (a.move_number === b.move_number) {
+          return a.position.split(' ')[1] === 'w' ? -1 : 1
+        }
+        return a.move_number - b.move_number;
+      }), 'move'), function(val) {
+        if (chess.move(val) == null) {
+          alert('fatal error');
+        }
       });
-      this.moveArray = this.chess.history();
-      console.log(this.chess.history());
+
+      var history = this.chess.history();
+      for (var i = 0; i < history.length; i += 2) {
+        this.moveArray.push([history[i], history[i+1]]);
+      }
     },
     jump(index) {
       this.isPlaying = false;

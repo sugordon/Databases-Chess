@@ -12,8 +12,8 @@
         <table class='table'>
           <thead>
             <tr>
-              <th v-on:click='sort("white_player")'>White Player</th>
-              <th v-on:click='sort("black_player")'>Black Player</th>
+              <th v-on:click='sort("white_player_name")'>White Player</th>
+              <th v-on:click='sort("black_player_name")'>Black Player</th>
               <th v-on:click='sort("result")'>Result</th>
               <th v-on:click='sort("event")'>Event</th>
               <th v-on:click='sort("date")'>Date</th>
@@ -21,8 +21,8 @@
           </thead>
           <tbody>
             <tr v-for="row in data">
-              <td><a v-bind:href='"#/player/"+row.white_player'>{{row.white_player}}</a></td>
-              <td><a v-bind:href='"#/player/"+row.black_player'>{{row.black_player}}</a></td>
+              <td><a v-bind:href='"#/player/"+row.white_player_id'>{{row.white_player_name}}</a></td>
+              <td><a v-bind:href='"#/player/"+row.black_player_id'>{{row.black_player_name}}</a></td>
               <td style='cursor: pointer' v-on:click='loadGame(row.game_id)'>{{row.result}}</td>
               <td style='cursor: pointer' v-on:click='loadGame(row.game_id)'>{{row.event}}</td>
               <td style='cursor: pointer' v-on:click='locaGame(row.game_id)'>{{row.date}}</td>
