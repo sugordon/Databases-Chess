@@ -37,9 +37,9 @@
               <td><a v-bind:href='"#/player/"+row.white_player_id'>{{row.white_player_name}}</a></td>
               <td><a v-bind:href='"#/player/"+row.black_player_id'>{{row.black_player_name}}</a></td>
               <td><a v-bind:href='"#/pgn/"+row.eco'>{{row.eco}}</a></td>
-              <td style='cursor: pointer'>{{row.result}}</td>
-              <td style='cursor: pointer'>{{row.event}}</td>
-              <td style='cursor: pointer'>{{row.date.slice(0,10)}}</td>
+              <td v-on:click='loadGame(row.game_id)' style='cursor: pointer'>{{row.result}}</td>
+              <td v-on:click='loadGame(row.game_id)' style='cursor: pointer'>{{row.event}}</td>
+              <td v-on:click='loadGame(row.game_id)' style='cursor: pointer'>{{row.date.slice(0,10)}}</td>
             </tr>
           </tbody>
         </table>

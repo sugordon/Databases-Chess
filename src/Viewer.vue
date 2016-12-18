@@ -26,8 +26,7 @@
           </div>
         </div>
       </div>
-      <div>
-      </div>
+      <button v-if='isGame && move_number === chess.history().length' type='button' class='btn btn-default'>Winner: {{pgnData.result}}</button>
       </br>
       <div v-if='isGame && Object.keys(pgnData).length !== 0'>
         <h4><b>Event: {{pgnData.event}}</b></h4>
@@ -91,7 +90,6 @@ export default {
       ground: 0,
       whiteLabel: '',
       blackLabel: '',
-      winner: true,
       options: {
         events: {
           change: this.updateFen
@@ -214,6 +212,11 @@ export default {
       this.options.fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
       this.options.lastMove = null;
       this.ground.set(this.options);
+
+      var currentMove = document.getElementById('move-' + this.move_number).parentElement;
+      var topPos = currentMove.offsetTop;
+      var element = document.getElementById('pgn-box');
+      element.scrollTop = topPos - 153;
     },
     back() {
       this.isPlaying = false;
@@ -287,6 +290,7 @@ export default {
       }
     },
     next() {
+      console.log(this.move_number);
       if (this.move_number === this.chess.history().length) {
         console.log('no more moves');
         return;
@@ -337,6 +341,11 @@ export default {
       var lastMove = history[this.move_number-1];
       this.options.lastMove = [lastMove.from, lastMove.to];
       this.ground.set(this.options);
+
+      var currentMove = document.getElementById('move-' + this.move_number).parentElement;
+      var topPos = currentMove.offsetTop;
+      var element = document.getElementById('pgn-box');
+      element.scrollTop = topPos - 153;
     }
   }
 }
