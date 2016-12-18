@@ -267,9 +267,7 @@ function getQuery(object) {
 			}
 			break;
 	}
-	if (object.type < 4){
-		command += " LIMIT 100";
-	}
+	command += " LIMIT 500";
 	console.log(command);
 	return command;
 } 
