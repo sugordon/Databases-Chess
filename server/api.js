@@ -202,7 +202,7 @@ function getQuery(object) {
 				conjuncts += " AND ";
 				first = "(SELECT P3.pid FROM players P3 where P3.name LIKE '%" + player2 + "%')";
 				second = "(SELECT P4.pid FROM players P4 where P4.name LIKE '%" + player2 + "%')";
-				conjuncts += ("G.white_player in " + first + " OR G.black_player in " + second + ")");
+				conjuncts += ("(G.white_player in " + first + " OR G.black_player in " + second + ")");
 			}
 			//pid1 or pid2 (or both)
 			if (pid1 != ""){
@@ -215,7 +215,7 @@ function getQuery(object) {
 				}
 			}else if (pid2 != ""){
 				conjuncts += " AND ";
-				conjuncts += ("G.white_player = " + pid2 + " OR G.black_player in " + pid2 + ")");
+				conjuncts += ("(G.white_player = " + pid2 + " OR G.black_player = " + pid2 + ")");
 			}
 			//date
 			if (date_lower != ""){
