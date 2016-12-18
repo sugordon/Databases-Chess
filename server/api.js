@@ -243,8 +243,7 @@ function getQuery(object) {
 				if (conjuncts.length != 0){
 					conjuncts += " AND ";
 				}
-				subposition = position.substring(0,position.indexOf(" ")+2);
-				move_id = "(SELECT move_id FROM moves where position LIKE '%" + subposition + "%')";
+				move_id = "(SELECT move_id FROM moves where position LIKE '%" + position + "%')";
 				eco = "(SELECT eco FROM openings_moves where move_id in " + move_id + ")";
 				conjuncts += ("eco in " + eco);
 			}
