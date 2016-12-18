@@ -3,6 +3,8 @@
     <div class='jumbotron'>
       <h1>Player Search</h1>
         <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder=''>
+        <h3>ELO Range: {{ eloSlider }}</h3>
+        <div id='elo-slider'></div>
     </div>
     <div v-if='data' class='row'>
       <div class='col-lg-12'>
@@ -32,20 +34,55 @@
 </template>
 
 <script>
+var noUiSlider = require('nouislider');
+
 export default { name: 'app',
   data () {
     return {
       input: '',
       data: false,
       sorted: '',
-      reversed: 1
+      reversed: 1,
+      eloSlider: null,
+      eloEle: null
     }
   },
+  mounted() {
+    var noUiSlider = require('nouislider');
+
+    this.eloEle = document.getElementById('elo-slider');
+
+    noUiSlider.create(this.eloEle, {
+      start: [0, 3000],
+      connect: true,
+      range: {
+        'min': 0,
+        'max': 3000
+      },
+      step: 100
+    });
+    this.eloEle.noUiSlider.on('update', this.updateSlider);
+  },
   methods: {
+    updateSlider() {
+      var vals = this.eloEle.noUiSlider.get();
+      this.eloSlider = parseInt(vals[0]) + '-' + parseInt(vals[1]);
+    },
     search() {
-      this.$http.get('/api/playersearch/', { params: {value:this.input}}).then(function(res) {
+      var vals = this.eloEle.noUiSlider.get();
+      this.$http.get('/api/playersearch/', {
+        params: {
+          "type"    :   "1",
+          "name"	:   this.input,
+          "birth_year_lower" : "",
+          "birth_year_upper" : "",
+          "elo_lower" : "" + vals[0] + "",
+          "elo_upper" : "" + vals[1] + "",
+          "nationality" : "",
+          "sex" : ""
+        }
+      }).then(function(res) {
         this.data = res.body.data;
-        console.log(this.data);
       });
     },
     sort(type) {
