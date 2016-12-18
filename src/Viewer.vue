@@ -7,10 +7,10 @@
     <div class='col-lg-6'>
       <!--<textarea v-model='pgn' rows="15" cols="50" placeholder='Paste PGN'></textarea>-->
       <div id='pgn-box' class='pgn-scrolling'>
-        <div v-for='(move, index) in pgn.split(/[0-9]+\./).slice(1)'>
+        <div v-for='(move, index) in moveArray'>
           <div class="btn-group">
-            <button v-bind:id='"move-" + (2*index)' type='button' v-on:click='jump(2*index)' v-bind:class="{ 'selected' : move_number === 2*index+1 }" class='btn btn-default'>{{index+1}}. {{move.split(' ')[1]}}</button>
-            <button v-bind:id='"move-" + (2*index+1)' type='button' v-on:click='jump(2*index+1)' v-bind:class="{ 'selected' : move_number === 2*index+2 }" class='btn btn-default'>{{move.split(' ')[2]}}</button>
+            <button v-bind:id='"move-" + (2*index)' type='button' v-on:click='jump(2*index)' v-bind:class="{ 'selected' : move_number === 2*index+1 }" class='btn btn-default'>{{index+1}}. {{move}}</button>
+            <button v-bind:id='"move-" + (2*index+1)' type='button' v-on:click='jump(2*index+1)' v-bind:class="{ 'selected' : move_number === 2*index+2 }" class='btn btn-default'>{{move}}</button>
           </div>
         </div>
       </div>
@@ -61,9 +61,9 @@ export default {
       pgn_id: this.$route.params.id,
       fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
       isPlaying: false,
-      pgn: '',
       intervalId: -1,
       move_number: 0,
+      moveArray: [],
       chess: null,
       ground: 0,
       options: {
@@ -81,15 +81,24 @@ export default {
   },
   created() {
     this.chess = new Chess();
-    //this.pgn = '1. d4 e6 2. c4 d5 3. Nf3 Nf6 4. Nc3 Bb4 5. Bg5 h6 6. Bxf6 Qxf6 7. e3 O-O 8. Rc1 dxc4 9. Bxc4 c5 10. O-O cxd4 11. Ne4 Qe7 12. exd4 Nc6 13. Qe2 Bd7 14. a3 Bd6 15. Rfd1 Rad8 16. Qe3 Rfe8 17. b4 a6 18. Be2 Nb8 19. Ne5 Ba4 20. Rd2 Bxe5 21. dxe5 Rxd2 22. Qxd2 Rd8 23. Qb2 Bc6 24. Nd6 Bd5 25. f4 Nc6 26. a4 Qc7 27. b5 Qb6+ 28. Kf1 axb5 29. axb5 Ne7 30. Qc3 Rf8 31. Qc5 Qa5 32. Rd1 Qa2 33. g3 f6 34. exf6 Rxf6 35. Qc3 Qa7 36. Ne8 Rf7 37. Bh5 g6 38. Nf6+ Rxf6 39. Qxf6 gxh5 40. Qxe7 Bc4+ 41. Kg2 Bd5+ 42. Kh3 Qa2 43. Rxd5 Qxd5 44. Kh4 Qxb5 45. Qxe6+ Kg7 46. f5 Qc6 47. Qe7+ Kg8 48. Kxh5 b5 49. g4 b4 50. Qxb4 Qc7 51. Qb3+ Kh8 52. Qe6 Qf7+ 53. Qg6 Qc7 54. Qxh6+ Kg8 55. Qe6+ Kh8 56. Qe8+ Kh7 57. h4 Qb7 58. Qg6+ Kh8 59. Qh6+ Kg8 60. Qe6+ Kh8 61. g5 Qf7+ 62. g6 Qf8 63. g7+';
     //this.pgn = '1. e4 Nf6 2. e5 Ne4 3. d3 Nc5 4. d4 Ne4 5. Qd3 d5 6. exd6 Nxd6 7. Nf3 b5 8. Bf4 e5 9. Bxe5 Bf5 10. Qb3 Nc6 11. Bxb5 Qd7 12. O-O Ne4 13. Nc3 a6 14. Ba4 Be6 15. d5 Bf5 16. Bxc6 Qxc6 17. dxc6 Bc5 18. Bxg7 Rg8 19. Ne5 Rxg7 20. Nxe4 Bxe4 21. g3 f5 22. Rad1 Bf3 23. Rd7 Rd8 24. Rxg7 Rd4 25. Qf7+ Kd8 26. Qg8+ Bf8 27. Qxf8#'
-    this.pgn = '1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nc3 Qc7 6. Be2 a6 7. O-O Nf6 8. Be3 Be7 9. f4 d6 10. Kh1 O-O 11. Qe1 Nxd4 12. Bxd4 b5 13. a3 Bb7 14. Qg3 Rad8 15. Bd3 Rd7 16. Rae1 Re8 17. Qh3 e5 18. fxe5 dxe5 19. Nd5 Bxd5 20. exd5 Rxd5 21. Bc3 Bd8 22. Rf5 g6 23. Qg3 Re6 24. Bxe5 Qe7 25. Rxf6 Rexe5 26. Rxe5 Rxe5 27. Rf1 Bc7 28. Qf2 Kg7 29. Qd4 f6 30. g3 Qe6 31. Qf2 h5 32. Qf3 Qd6 33. Rd1 Qe7 34. Qc6 Re6 35. Qd5 h4 36. gxh4 Re1+ 37. Rxe1 Qxe1+ 38. Kg2 Qd2+ 39. Kf1 Qf4+ 40. Ke2 Qxh2+ 41. Kf1 Bg3 42. Qd7+ Kh6 43. Qd4 Qh1+ 44. Ke2 Qg2+ 45. Kd1 Qf3+ 46. Kd2 Bf4+ 47. Ke1 Qh1+ 48. Ke2 Qxh4 49. Qf2 Qxf2+ 50. Kxf2 Bc1 51. c4 Bxb2 52. cxb5 a5 53. a4 Kg5 54. Ke3 f5 55. Be2 Be5 56. b6 Kh4 57. b7 g5 58. Bd3 f4+ 59. Ke4 Bb8 60. Be2 g4 61. Bb5 Kg3 62. Kf5 f3 63. Bc4 f2 64. Be2 Ba7 65. Kg5 Kg2 66. Kxg4 f1=Q 67. Bxf1+ Kxf1 ';
-    //this.pgn = '1. Nf3 f5 2. d3 Nc6 3. d4 e6 4. g3 Nf6 5. Bg2 d5 6. O-O Rb8 7. Nbd2 b5 8. Ne5 Nxe5 9. dxe5 Nd7 10. Nf3 c5 11. b3 Be7 12. c4 bxc4 13. bxc4 dxc4 14. Qc2 O-O 15. Rd1 Qc7 16. Qxc4 Nb6 17. Qc2 Bb7 18. Ne1 Nd5 19. e4 fxe4 20. Bxe4 Qxe5 21. Bxh7+ Kh8 22. Bb2 Qh5 23. Bg6 Qh3 24. Qe2 Ba6 25. Nd3 c4 26. Ne5 c3 27. Qxa6 Rxf2 28. Kxf2 cxb2 29. Kg1 bxa1=Q 30. Rxa1 Bf6 31. Rb1 Rf8 32. Qa3 Be7 33. Qxa7 Kg8 34. Nd7 Nf4 35. gxf4 Qg4+ 36. Kh1 Qxg6 37. Rb8 Qe4+ 38. Kg1 Qe1+ 39. Kg2 Qd2+ 40. Kg1 Rxb8 41. Qxb8+ Kh7 42. Qb5 Kh6 43. Qc6 Qe2 44. Ne5 Qxa2 45. Qf3 Bc5+ '
-    this.chess.load_pgn(this.pgn);
-    //this.$http.get('/api/fen/', { params: {value:this.pgn_id}}).then(function(res) {
-      //this.data = res.body.data;
-      //console.log(this.data);
-    //});
+    var params = {};
+    if (this.pgn_id.match(/[A-Z]/)) {
+      params = {
+        params: {
+          "type" : "5",
+          "eco" : this.pgn_id
+        }
+      }
+    } else {
+      params = {
+        params: {
+          "type" : "4",
+          "game_id" : this.pgn_id
+        }
+      }
+    }
+    this.$http.get('/api/playersearch/', params).then(this.loadResult);
   },
   mounted () {
     var element = document.getElementById('viewer-board');
@@ -101,6 +110,15 @@ export default {
   methods: {
     updateFen() {
       this.fen = this.ground.getFen();
+    },
+    loadResult (res) {
+      var data = res.body.data;
+      var chess = this.chess;
+      _.each(data, function(val) {
+        chess.move(val.move);
+      });
+      this.moveArray = this.chess.history();
+      console.log(this.chess.history());
     },
     jump(index) {
       this.isPlaying = false;
@@ -218,7 +236,6 @@ export default {
       }
       //Handles Promotions
       if (move.flags.includes('p')) {
-        console.log('asdfas');
         var promote = {};
         var promotedPiece = letterToPiece(move.promotion);
         promote[move.from] = {

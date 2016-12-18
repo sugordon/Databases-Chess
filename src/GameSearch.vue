@@ -2,29 +2,30 @@
 <div class='container'>
     <div class='jumbotron'>
       <h1>Games Search</h1>
-        <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder='Player1'>
-        <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder='Player2'>
-        <input v-on:keyup.enter='search' v-model='input' type='text' class='form-control' placeholder='Event'>
+        <input v-on:keyup.enter='search' v-model='player1' type='text' class='form-control' placeholder='Player1'>
+        <input v-on:keyup.enter='search' v-model='player2' type='text' class='form-control' placeholder='Player2'>
+        <input v-on:keyup.enter='search' v-model='event' type='text' class='form-control' placeholder='Event'>
+        <input v-on:keyup.enter='search' v-model='eco' type='text' class='form-control' placeholder='ECO'>
     </div>
     <div v-if='data' class='row'>
       <div class='col-lg-12'>
         <table class='table'>
           <thead>
             <tr>
-              <th v-on:click='sort("Name")'>Name</th>
-              <th v-on:click='sort("ELO")'>Games</th>
-              <th v-on:click='sort("Nationality")'>Nationality</th>
-              <th v-on:click='sort("Sex")'>Sex</th>
-              <th v-on:click='sort("ELO")'>ELO</th>
+              <th v-on:click='sort("white_player")'>White Player</th>
+              <th v-on:click='sort("black_player")'>Black Player</th>
+              <th v-on:click='sort("result")'>Result</th>
+              <th v-on:click='sort("event")'>Event</th>
+              <th v-on:click='sort("date")'>Date</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="row in data">
-              <td><a v-bind:href='"#/player/"+row.pid'>{{row.Name}}</a></td>
-              <td>0</td>
-              <td>{{row.Nationality}}</td>
-              <td>{{row.Sex}}</td>
-              <td>{{row.ELO}}</td>
+              <td><a v-bind:href='"#/player/"+row.white_player'>{{row.white_player}}</a></td>
+              <td><a v-bind:href='"#/player/"+row.black_player'>{{row.black_player}}</a></td>
+              <td style='cursor: pointer' v-on:click='loadGame(row.game_id)'>{{row.result}}</td>
+              <td style='cursor: pointer' v-on:click='loadGame(row.game_id)'>{{row.event}}</td>
+              <td style='cursor: pointer' v-on:click='locaGame(row.game_id)'>{{row.date}}</td>
             </tr>
           </tbody>
         </table>
@@ -37,7 +38,10 @@
 export default { name: 'app',
   data () {
     return {
-      input: '',
+      player1: '',
+      player2: '',
+      event: '',
+      eco: '',
       data: false,
       sorted: '',
       reversed: 1
@@ -45,7 +49,24 @@ export default { name: 'app',
   },
   methods: {
     search() {
-        console.log(this.input);
+      this.$http.get('/api/playersearch/', {
+        params: {
+          "type" : "2",
+          "event" : this.event,
+          "player1" : this.player1,
+          "player2" : this.player2,
+          "date_lower" : "",
+          "date_upper" : "",
+          "eco" : this.eco,
+          "position" : "",
+        }
+      }).then(function(res) {
+        this.data = res.body.data;
+        console.log(this.data[0]);
+      });
+    },
+    loadGame(id) {
+      window.location = '#/pgn/' + id;
     },
     sort(type) {
       if (this.sorted === type) {
