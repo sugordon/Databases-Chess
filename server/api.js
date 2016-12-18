@@ -159,6 +159,8 @@ function getQuery(object) {
 			event = object.event;
 			player1 = object.player1;
 			player2 = object.player2;
+			pid1 = object.pid1;
+			pid2 = object.pid2;
 			date_lower = object.date_lower;
 			date_upper = object.date_upper;
 			eco = object.eco;
@@ -174,7 +176,8 @@ function getQuery(object) {
 				if (player2 != ""){
 					first = "(SELECT P3.pid FROM players P3 where P3.name LIKE '%" + player1 + "%')";
 					second = "(SELECT P4.pid FROM players P4 where P4.name LIKE '%" + player2 + "%')";
-					conjuncts += ("(G.white_player in " + first + "AND G.black_player in " + second);
+					conjuncts += ("((G.white_player in " + first + "AND G.black_player in " + second + ") OR ");
+					conjuncts += ("(G.white_player in " + second + "AND G.black_player in " + first + "))");
 				}else{
 					first = "(SELECT P3.pid FROM players P3 where P3.name LIKE '%" + player1 + "%')";
 					second = "(SELECT P4.pid FROM players P4 where P4.name LIKE '%" + player1 + "%')";
@@ -185,6 +188,19 @@ function getQuery(object) {
 				first = "(SELECT P3.pid FROM players P3 where P3.name LIKE '%" + player2 + "%')";
 				second = "(SELECT P4.pid FROM players P4 where P4.name LIKE '%" + player2 + "%')";
 				conjuncts += ("G.white_player in " + first + "OR G.black_player in " + second + ")");
+			}
+			//pid1 or pid2 (or both)
+			if (pid1 != ""){
+				conjuncts += " AND ";
+				if (pid2 != ""){
+					conjuncts += ("((G.white_player = " + pid1 + " AND G.black_player = " + pid2 + ")");
+					conjuncts += ("OR (G.white_player = " + pid2 + " AND G.black_player = " + pid1 + "))");
+				}else{
+					conjuncts += ("(G.white_player = " + pid2 + "OR G.black_player = " + pid2 + ")");
+				}
+			}else if (pid2 != ""){
+				conjuncts += " AND ";
+				conjuncts += ("G.white_player = " + pid + "OR G.black_player in " + second + ")");
 			}
 			//date
 			if (date_lower != ""){
@@ -207,7 +223,6 @@ function getQuery(object) {
 			}
 			if (position != ""){
 				conjuncts += " AND ";
-				subposition = position.substring(0,position.indexOf(" ")+2);
 				move_id = "(SELECT M.move_id FROM moves M where M.position LIKE '%" + position + "%')";
 				game_id = "(SELECT G2.game_id FROM games_moves G2 where G2.move_id in " + move_id + ")";
 				conjuncts += ("G.game_id in " + game_id);
@@ -243,8 +258,8 @@ function getQuery(object) {
 				if (conjuncts.length != 0){
 					conjuncts += " AND ";
 				}
-				move_id = "(SELECT move_id FROM moves where position LIKE '%" + position + "%')";
-				eco = "(SELECT eco FROM openings_moves where move_id in " + move_id + ")";
+				move_id = "(SELECT M.move_id FROM moves M where M.position LIKE '%" + position + "%')";
+				eco = "(SELECT O2.eco FROM openings_moves O2 where O2.move_id in " + move_id + ")";
 				conjuncts += ("eco in " + eco);
 			}
 			if (conjuncts.length != 0){
