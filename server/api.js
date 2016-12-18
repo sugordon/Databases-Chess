@@ -155,6 +155,7 @@ function getQuery(object) {
 			command += (" as white_player_name, P2.name as black_player_name,  G.result, G.date, G.eco, O.name_white as ");
 			command += (" white_opening, O.name_black as black_opening from games G, openings O, players P1, players P2 ");
 			command += (" where P1.pid = G.white_player  and P2.pid = G.black_player and O.eco = G.eco ");
+			command += (" and G.game_id in (SELECT G3.game_id FROM games_moves G3) ");
 			event = object.event;
 			player1 = object.player1;
 			player2 = object.player2;
