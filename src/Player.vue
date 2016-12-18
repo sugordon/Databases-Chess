@@ -8,23 +8,23 @@
             <table class='info-table table'>
                 <tr>
                     <th>Name</th>
-                    <td>{{data.Name}}</td>
+                    <td>{{data.name}}</td>
                 </tr>
                 <tr>
                     <th>ELO</th>
-                    <td>{{data.ELO}}</td>
+                    <td>{{data.elo}}</td>
                 </tr>
                 <tr>
                     <th>Nationality</th>
-                    <td>{{data.Nationality}}</td>
+                    <td>{{data.nationality}}</td>
                 </tr>
                 <tr>
                     <th>Sex</th>
-                    <td>{{data.Sex}}</td>
+                    <td>{{data.sex}}</td>
                 </tr>
                 <tr>
                     <th>Birth Year</th>
-                    <td>{{data.Birth_year}}</td>
+                    <td>{{data.birth_year}}</td>
                 </tr>
             </table>
         </div>
@@ -65,13 +65,15 @@ export default {name: 'app',
         }
     },
     created () {
-        this.data = {
-            Name: 'Smith',
-            ELO: 1231,
-            Nationality: 'NAT',
-            Birth_year: '1900',
-            Sex: 'M'
-        };
+        this.$http.get('/api/playersearch/', {
+            params: {
+                "type" : "6",
+                "pid" : this.$route.params.id
+            }
+        }).then(function(res) {
+            this.data = res.body.data[0];
+            console.log(this.data);
+        });
         this.$http.get('/api/playersearch/', {
             params: {
                 "type" : "2",

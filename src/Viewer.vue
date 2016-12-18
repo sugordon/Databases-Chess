@@ -12,10 +12,10 @@
           <button v-on:click='getById' class="btn btn-default" type="button">Load</button>
         </span>
       </div><!-- /input-group -->
-      <table style='width:100%'>
+      <table v-if='moveArray.length!==0' style='width:100%'>
         <tr>
-          <th>White {{whitePlayer}}</th>
-          <th>Black {{blackPlayer}}</th>
+          <th>White {{whiteLabel}}</th>
+          <th>Black {{blackLabel}}</th>
         </tr>
       </table>
       <div id='pgn-box' class='pgn-scrolling'>
@@ -26,7 +26,13 @@
           </div>
         </div>
       </div>
+      <div>
+      </div>
       </br>
+      <div v-if='isGame'>
+        <h4><b>Event: {{pgnData.event}}</b></h4>
+        <h4><b>ECO: {{pgnData.eco}}</b></h4>
+      </div>
       <div>
         <input v-model='fen' type='text' class='form-control' placeholder=''>
         </br>
@@ -74,6 +80,8 @@ export default {
   data () {
     return {
       pgn_id: this.$route.params.id,
+      isGame: true,
+      pgnData: {},
       fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
       isPlaying: false,
       intervalId: -1,
@@ -81,8 +89,9 @@ export default {
       moveArray: [],
       chess: null,
       ground: 0,
-      whitePlayer: '',
-      blackPlayer: '',
+      whiteLabel: '',
+      blackLabel: '',
+      winner: true,
       options: {
         events: {
           change: this.updateFen
@@ -113,7 +122,25 @@ export default {
     getById() {
       this.chess = new Chess();
       var params = {};
+      if (this.pgn_id === 0) {
+          return;
+      }
+      window.history.pushState('Chess Viewer', 'Chess Viewer', '#/pgn/'+this.pgn_id);
       if (this.pgn_id.match(/[A-Z]/)) {
+        this.isGame = false;
+        this.$http.get('/api/playersearch/', {
+          params: {
+            "type" : "3",
+            "eco" : this.pgn_id,
+            "name_white" : "",
+            "name_black" : "",
+            "position" : "",
+          }
+        }).then(function(res) {
+          var data = res.body.data[0];
+          this.whiteLabel = ": " + data.name_white;
+          this.blackLabel = ": " + data.name_black;
+        });
         params = {
           params: {
             "type" : "5",
@@ -121,7 +148,6 @@ export default {
           }
         }
       } else {
-        console.log('asdf');
         this.$http.get('/api/playersearch/', {
           params: {
             "type" : "2",
@@ -138,8 +164,9 @@ export default {
           }
         }).then(function(res) {
           var data = res.body.data[0];
-          this.whitePlayer = ": " + data.white_player_name;
-          this.blackPlayer = ": " + data.black_player_name;
+          this.whiteLabel = ": " + data.white_player_name;
+          this.blackLabel = ": " + data.black_player_name;
+          this.pgnData = data;
         });
         params = {
           params: {
@@ -152,7 +179,6 @@ export default {
     },
     loadResult (res) {
       var data = res.body.data;
-      console.log(data.length);
       var chess = this.chess;
       _.each(_.pluck(data.sort(function(a, b) {
         if (a.move_number === b.move_number) {

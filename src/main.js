@@ -16,8 +16,8 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 const routes = [
-  { path: '/', component: PlayerSearch },
-  { path: '/gamesearch', component: GameSearch },
+  { path: '/playersearch', component: PlayerSearch },
+  { path: '/', component: GameSearch },
   { path: '/openingsearch', component: OpeningSearch },
   { path: '/player/:id', component: Player },
   { path: '/pgn/:id', component: Viewer },
