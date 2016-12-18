@@ -36,13 +36,16 @@ var player = {	  //THIS QUERIES THE PLAYER TABLE, RETURNS MATCHING PLAYER TUPLES
 
 var game = {   //THIS QUERIES THE GAMES TABLE, RETURNS MATCHING GAMES TUPLES (ONLY GAME INFO, NOT GAME MOVES) IN JSON FORMAT
 	"type" : "2",
-	"event" : "World Cup",
-	"player1" : "Boris",
-	"player2" : "Rahman",
-	"date_lower" : "",
-	"date_upper" : "",
-	"eco" : "A40",
-	"position" : "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1",
+	"game_id" : "",
+    "event" : "",
+    "player1" : "",
+    "player2" : "",
+	"pid1" : "10200037",
+	"pid2" : "2805677",
+    "date_lower" : "",
+    "date_upper" : "",
+    "eco" : "",
+    "position" : ""
 };
 
 var opening = { //THIS QUERIES THE OPENINGS TABLE, RETURNS OPENINGS TUPLES (ONLY OPENING INFO, NOT OPENING MOVES) IN JSON FORMAT
@@ -165,10 +168,15 @@ function getQuery(object) {
 			date_upper = object.date_upper;
 			eco = object.eco;
 			position = object.position;
-			length = object.length;
+			game_id = object.game_id;
 			//event
 			if (event != ""){
 				conjuncts += ("AND G.event LIKE '%" + event + "%'");
+			}
+			//game_id
+			if (game_id != ""){
+				conjuncts += " AND ";
+				conjuncts += ("game_id = " + game_id); 
 			}
 			//player1 or player2 (or both)
 			if (player1 != ""){
@@ -223,9 +231,9 @@ function getQuery(object) {
 			}
 			if (position != ""){
 				conjuncts += " AND ";
-				move_id = "(SELECT M.move_id FROM moves M where M.position LIKE '%" + position + "%')";
-				game_id = "(SELECT G2.game_id FROM games_moves G2 where G2.move_id in " + move_id + ")";
-				conjuncts += ("G.game_id in " + game_id);
+				valid_move_id = "(SELECT M.move_id FROM moves M where M.position LIKE '%" + position + "%')";
+				valid_game_id = "(SELECT G2.game_id FROM games_moves G2 where G2.move_id in " + valid_move_id + ")";
+				conjuncts += ("G.game_id in " + valid_game_id);
 			}
 			command += conjuncts;
 			break;
@@ -285,6 +293,7 @@ function getQuery(object) {
 	console.log(command);
 	return command;
 } 
+
 
 /*
 connection.query(getQuery(games_moves), function(err,rows) {
