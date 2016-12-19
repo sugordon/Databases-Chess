@@ -90,6 +90,37 @@ export default {name: 'app',
             console.log(res.body.data);
             this.gamedata = res.body.data;
         });
+    },
+    methods:  {
+        sort(type) {
+            if (this.sorted === type) {
+                this.reversed*=-1;
+            } else {
+                this.sorted = type;
+                this.reversed = 1;
+            }
+            if (this.reversed === 1) {
+                this.gamedata.sort(function(a, b) {
+                        if (a[type] > b[type]) {
+                        return 1;
+                        } else if (a[type] < b[type]){
+                        return -1;
+                        } else {
+                        return 0;
+                        }
+                        });
+            } else {
+                this.gamedata.sort(function(a, b) {
+                        if (a[type] > b[type]) {
+                        return -1;
+                        } else if (a[type] < b[type]){
+                        return 1;
+                        } else {
+                        return 0;
+                        }
+                        });
+            }
+        }
     }
 }
 </script>
