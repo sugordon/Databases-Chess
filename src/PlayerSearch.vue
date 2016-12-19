@@ -73,7 +73,11 @@ export default { name: 'app',
     hasGames: function () {
       _.each(this.hasGames, function(val) {
         val[1].then(function(res) {
-          val[0].games = res.body.data.length;
+          var len = res.body.data.length;
+          if (len !== 0) {
+              val[0].games = res.body.data.length;
+              this.data = this.data.slice();
+          }
         });
       });
     }
