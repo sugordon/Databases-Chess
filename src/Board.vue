@@ -9,7 +9,7 @@
         <img v-bind:class='{ selected: (piece == "bB") }' v-on:click='pickup("bB")' v-bind:src='"/components/chessground/assets/images/pieces/cburnett/bB.svg"'>
         <img v-bind:class='{ selected: (piece == "bN") }' v-on:click='pickup("bN")' v-bind:src='"/components/chessground/assets/images/pieces/cburnett/bN.svg"'>
         <img v-bind:class='{ selected: (piece == "bP") }' v-on:click='pickup("bP")' v-bind:src='"/components/chessground/assets/images/pieces/cburnett/bP.svg"'>
-        <i v-on:click='pickup("dd")' class="fa fa-times" aria-hidden="true"></i>
+        <i v-on:click='pickup("dd")' class="fa fa-lg fa-times" aria-hidden="true"></i>
       </div>
       <div id='main-board' class="wood chessground vuejs cburnett"></div>
       <div class='spare-pieces'>
@@ -19,7 +19,7 @@
         <img v-bind:class='{ selected: (piece == "wB") }' v-on:click='pickup("wB")' v-bind:src='"/components/chessground/assets/images/pieces/cburnett/wB.svg"'>
         <img v-bind:class='{ selected: (piece == "wN") }' v-on:click='pickup("wN")' v-bind:src='"/components/chessground/assets/images/pieces/cburnett/wN.svg"'>
         <img v-bind:class='{ selected: (piece == "wP") }' v-on:click='pickup("wP")' v-bind:src='"/components/chessground/assets/images/pieces/cburnett/wP.svg"'>
-        <i v-on:click='pickup("dd")' class="fa fa-times" aria-hidden="true"></i>
+        <i v-on:click='pickup("dd")' class="fa fa-lg fa-times" aria-hidden="true"></i>
       </div>
       <div>
         <button v-on:click='empty()' type="submit" class="btn btn-default">Empty Board</button>
