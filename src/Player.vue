@@ -37,7 +37,6 @@
                         <th v-on:click='sort("black_player_name")'>Black Player</th>
                         <th v-on:click='sort("result")'>Result</th>
                         <th v-on:click='sort("event")'>Event</th>
-                        <th v-on:click='sort("date")'>Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,7 +46,6 @@
                         <td><a v-bind:href='"#/player/"+row.black_player_id'>{{row.black_player_name}}</a></td>
                         <td style='cursor: pointer'>{{row.result}}</td>
                         <td style='cursor: pointer'>{{row.event}}</td>
-                        <td style='cursor: pointer'>{{row.date}}</td>
                     </tr>
                 </tbody>
             </table>
